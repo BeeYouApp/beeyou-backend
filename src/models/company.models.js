@@ -124,7 +124,6 @@ const companySchema = new mongoose.Schema({
   ],
   address: {
     address: AddressSchema,
-    required: true,
   },
   avatar: {
     type: String,

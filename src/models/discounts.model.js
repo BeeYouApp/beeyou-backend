@@ -6,46 +6,48 @@ const discountSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   mealsDiscounts: {
-    type: Number
+    type: Number,
   },
   beveragesDiscounts: {
-    type: Number
+    type: Number,
   },
-  mealsDiscounts: {
-    type: Number
+  mealsDiscountsPorcentage: {
+    type: Number,
   },
-  beveragesDiscountsP: {
-    type: Number
+  beveragesDiscountsPorcentage: {
+    type: Number,
   },
   twoOnePromos: {
-    type: String
+    type: String,
   },
   threeTwoPromo: {
-    type: String
+    type: String,
   },
   customDiscounts: {
     type: String,
-    required: true
+    required: true,
   },
   initialDate: {
     type: Date,
-    required: true
+    required: true,
   },
   endDate: {
     type: Date,
-    required: true
+    required: true,
   },
-  image: [{
-    type: String,
-    required: true
-  }],
+  image: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   company: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "companies",
-    required: true
+    required: true,
   },
 });
 
