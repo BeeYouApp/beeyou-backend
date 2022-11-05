@@ -132,5 +132,4 @@ const companySchema = new mongoose.Schema({
 });
 
 const Company = mongoose.model("companies", companySchema);
-
 export { Company };
