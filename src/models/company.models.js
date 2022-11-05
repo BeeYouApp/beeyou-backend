@@ -17,7 +17,7 @@ const companySchema = new mongoose.Schema({
   plan: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    enum: ["", "", ""],
+    enum: ["basic", "pro"],
     default: hola,
   },
   isVerified: {
@@ -32,6 +32,19 @@ const companySchema = new mongoose.Schema({
   rfc: {
     type: String,
     trim: true,
+  },
+  type: {
+    type: String,
+    enum: [
+      "Restaurante",
+      "Cafetería",
+      "Bar",
+      "Tienda",
+      "Libreria",
+      "Discoteca/Antro",
+      "Ocio/Entetenimieto",
+    ],
+    required: true,
   },
   rfcName: {
     type: String,
