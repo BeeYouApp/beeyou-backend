@@ -122,9 +122,7 @@ const companySchema = new mongoose.Schema({
       ref: "ranking",
     },
   ],
-  address: {
-    address: AddressSchema,
-  },
+  address: AddressSchema,
   avatar: {
     type: String,
   },
