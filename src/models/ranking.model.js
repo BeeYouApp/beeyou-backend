@@ -6,25 +6,25 @@ const rankingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-    required: true
+    required: true,
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "companies",
-    required: true
+    required: true,
   },
   valoration: {
     type: Number,
-    required: true
+    required: true,
   },
   title: {
-    type: String
+    type: String,
   },
   opinion: {
-    type: String
+    type: String,
   },
 });
 
-const Ranking = mongoose.model("ranking", rankingSchema);
+const Ranking = mongoose.model("rankings", rankingSchema);
 
 export { Ranking };
