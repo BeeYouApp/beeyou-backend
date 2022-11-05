@@ -6,22 +6,22 @@ const rankingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-    required: true,
+    required: true
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "company",
-    required: true,
+    ref: "companies",
+    required: true
   },
   valoration: {
     type: Number,
-    required: true,
+    required: true
   },
   title: {
-    type: String,
+    type: String
   },
   opinion: {
-    type: String,
+    type: String
   },
 });
 

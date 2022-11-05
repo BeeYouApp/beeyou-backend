@@ -7,31 +7,31 @@ const companySchema = new mongoose.Schema({
     type: String,
     required: true,
     match: /.*@.*\..*/,
-    trim: true,
+    trim: true
   },
   password: {
     type: String,
     required: true,
-    trim: true,
+    trim: true
   },
   plan: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    enum: ["basic", "pro"],
-    default: hola,
+    enum: ["basic", "premium"],
+    default: "basic"
   },
-  isVerified: {
-    // es necesario?
-    type: Boolean,
+  verificationLevel: {
+    type: Number,
+    required: true
   },
   brandName: {
     type: String,
     required: true,
-    trim: true,
+    trim: true
   },
   rfc: {
     type: String,
-    trim: true,
+    trim: true
   },
   type: {
     type: String,
@@ -44,52 +44,56 @@ const companySchema = new mongoose.Schema({
       "Discoteca/Antro",
       "Ocio/Entetenimieto",
     ],
-    required: true,
+    required: true
   },
   rfcName: {
     type: String,
-    trim: true,
+    trim: true
   },
   legalRepresentative: {
-    type: Number,
+    type: String
+    trim: true
   },
   description: {
     type: String,
     trim: true,
-    required: true,
+    required: true
   },
-  image: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  discounts: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "ranking",
-    required: true,
-  },
-  events: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "events",
-    required: true,
-    trim: true,
-  },
-  ranking: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "ranking",
-    required: true,
-  },
+  image: [
+    {
+      type: String,
+      required: true,
+      trim: true
+    },
+  ],
+  discounts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "discounts"
+    },
+  ],
+  events: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "events"
+    },
+  ],
+  ranking: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ranking"
+    },
+  ],
   address: {
     type: Object,
     required: true,
-    trim: true,
+    trim: true
   },
   avatar: {
-    type: String,
-    required: true,
+    type: String
   },
 });
 
-const Company = mongoose.model("company", companySchema);
+const Company = mongoose.model("companies", companySchema);
 
 export { Company };
