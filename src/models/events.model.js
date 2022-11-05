@@ -14,10 +14,10 @@ const eventSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    type: {
+    topic: {
         type: String,
-        required: true
-        // options
+        required: true,
+        trim: true
     },
     timeStart: {
         type: Date,
@@ -50,24 +50,24 @@ const eventSchema = new mongoose.Schema({
         minLenght: 90,
         maxLenght: 300
     },
-    images: {
+    images: [{
         type: String,
         trim: true
-    },
+    }],
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "companies",
         required: true
     },
-    attendance: {
+    attendance: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
         required: true
-    }
+    }]
 });
 
 // Create model
-// 'events' (reference collection name) 'eventSchema (schema)
+// ('events' (reference collection name), 'eventSchema (schema))
 const Event = mongoose.model('events', eventSchema);
 
 export { Event };

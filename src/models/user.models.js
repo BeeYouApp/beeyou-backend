@@ -9,8 +9,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         match: /.*@.*\..*/
-        // validate: [isEmail, 'invalid email'],
-        // createIndexes: { unique: true }
     },
     password: {
         type: String,
@@ -38,29 +36,22 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
         enum: ['Hombre', 'Mujer', 'Prefiero no decir'],
-        default: 'Prefiero no decir',
-        // required: true
+        required: true
     },
     avatar: {
         type: String,
         trim: true
     },
-    company: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ranking",
-        required: true
-    },
-    myEvents: {
+    events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "events",
         required: true
-    },
-    myComments: {
+    }],
+    comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "comments",
         required: true
-    }
-    // Dónde establecer referencias
+    }]
 });
 
 
