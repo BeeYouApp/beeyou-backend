@@ -1,20 +1,19 @@
 import express from "express";
-import cors from "cors"
+import cors from "cors";
 
+const server = express();
 
-const server = express()
-// middlewares
-server.use(express.json())
-server.use(cors())
+// Middlewares located below
+server.use(express.json());
+server.use(cors());
 
-// aqui irán los routers
+// Routers located below
 server.get('/', (request, response) => {
     response.json ({
         version:'1.1.0'
     })
-} )
+});
 
-// handleError
+// handleError located below
 
 export {server}
-
