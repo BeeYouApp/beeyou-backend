@@ -44,13 +44,11 @@ const userSchema = new mongoose.Schema({
     },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "events",
-        required: true
+        ref: "events"
     }],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "comments",
-        required: true
+        ref: "comments"
     }]
 });
 
