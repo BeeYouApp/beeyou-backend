@@ -62,7 +62,6 @@ const eventSchema = new mongoose.Schema({
     attendance: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
-        required: true
     }]
 });
 
