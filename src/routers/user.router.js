@@ -74,10 +74,10 @@ router.patch('/users/:id', async (request, response, next) => {
 });
 
 // DELETE/users/:id
-router.delete('/users/:id', (request, response, next) => {
+router.delete('/users/:id', async (request, response, next) => {
     try {
         const { id } = request.params;
-        userUseCases.deleteById(id);
+        await userUseCases.deleteById(id);
 
         response.json({
             success: true,
