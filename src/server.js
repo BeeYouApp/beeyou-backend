@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import usersRouter from './routers/user.router.js';
 
 const server = express();
 
@@ -13,6 +14,7 @@ server.get('/', (request, response) => {
         version:'1.1.0'
     })
 });
+server.use('/users', usersRouter);
 
 // handleError located below
 

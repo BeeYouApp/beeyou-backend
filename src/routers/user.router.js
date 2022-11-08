@@ -1,7 +1,7 @@
 import express from 'express';
 import * as userUseCases from '../useCases/user.use.js';
 import { auth } from '../middlewares/auth.js'; // Auth
-import { StatusHttp } from '../libs/statusHttp,js'; // StatusHttp
+import { StatusHttp } from '../libs/statusHttp.js'; // StatusHttp
 
 
 const router = express.Router();
@@ -10,6 +10,7 @@ const router = express.Router();
 // GET/users
 router.get('/', /*auth*/ async (request, response, next) => {
     try {
+        console.log('hola')
         let allUsers;
         const page = request.query.page;
         const limit = request.query.limit;
@@ -58,7 +59,7 @@ router.post('/', async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch('/users/:id', async (request, response, next) => {
+router.patch('/:id', async (request, response, next) => {
     try {
         const {id} = request.params;
         const {body} = request;
@@ -74,7 +75,7 @@ router.patch('/users/:id', async (request, response, next) => {
 });
 
 // DELETE/users/:id
-router.delete('/users/:id', async (request, response, next) => {
+router.delete('/:id', async (request, response, next) => {
     try {
         const { id } = request.params;
         await userUseCases.deleteById(id);
