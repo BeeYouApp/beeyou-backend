@@ -27,27 +27,27 @@ async function update(idUser, newData) {
 }
 
 // Delete
-function deleteById(idUser) {
-    const userFound = User.findById(idUser);
+async function deleteById(idUser) {
+    const userFound = await User.findById(idUser);
 
     if(!userFound) throw new StatusHttp('No existe este user', 404);
 
-    return User.deleteOne({_id: idUser});
+    return await User.deleteOne({_id: idUser});
 }
 
 // Get By Id
-function getById(idUser) {
-    return User.findById(idUser);
+async function getById(idUser) {
+    return await User.findById(idUser);
 }
 
 // Get All
-function getAll() {
-    return User.find({});
+async function getAll() {
+    return await User.find({});
 }
 
 // GetAllByPage
-function getAllByPage(page, limit) {
-    return User.find().sort({'createdAt': -1}).skip((page - 1) * limit.limit(limit));
+async function getAllByPage(page, limit) {
+    return await User.find().sort({'createdAt': -1}).skip((page - 1) * limit.limit(limit));
 }
 
 export { 
