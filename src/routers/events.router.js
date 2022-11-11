@@ -61,7 +61,7 @@ router.patch("/:id", auth, async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body } = request;
-    await eventsUsesCases.updateById(id, body);
+    await eventsUsesCases.update(id, body);
 
     response.json({
       success: true,
