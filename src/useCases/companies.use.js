@@ -4,10 +4,16 @@ import { StatusHttp } from "../libs/statusHttp.js";
 
 function getAll() {
   return Company.find({});
+  // .populate("discounts")
+  // .populate("events")
+  // .populate("ranking");
 }
 
 function getById(id) {
   return Company.findById(id);
+  // .populate("discounts")
+  // .populate("events")
+  // .populate("ranking");
 }
 
 function deleteById(id) {
@@ -25,11 +31,15 @@ async function create(newCompany) {
 
 async function updated(idCompany, updatedCompany) {
   const { password } = updatedCompany;
-  const encryptedPassword = await bcrypt.hash(password);
-  return Company.findByIdAndUpdate(idCompany, {
-    ...updatedCompany,
-    password: encryptedPassword,
-  });
+  if (password) {
+    const encryptedPassword = await bcrypt.hash(password);
+    return Company.findByIdAndUpdate(idCompany, {
+      ...updatedCompany,
+      password: encryptedPassword,
+    });
+  } else {
+    return Company.findByIdAndUpdate(idCompany, updatedCompany);
+  }
 }
 
 export { getAll, getById, deleteById, updated, create };
