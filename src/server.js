@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import usersRouter from './routers/user.router.js';
+import authRouter from './routers/auth.router.js'
 
 const server = express();
 
@@ -15,6 +16,7 @@ server.get('/', (request, response) => {
     })
 });
 server.use('/users', usersRouter);
+server.use('/login', authRouter);
 
 // handleError located below
 

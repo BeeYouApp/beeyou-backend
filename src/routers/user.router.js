@@ -8,7 +8,7 @@ const router = express.Router();
 // Endpoint -> Use cases -> Models
 
 // GET/users
-router.get('/', /*auth*/ async (request, response, next) => {
+router.get('/', async (request, response, next) => {
     try {
         console.log('hola')
         let allUsers;
@@ -46,7 +46,7 @@ router.get('/:id', auth, async (request, response, next) => {
 // POST/users/
 router.post('/', async (request, response, next) => {
     try {
-       const {body: newUser} = request;
+       const {body: newUser} = request; // const newUser = request.body;
        await userUseCases.create(newUser);
        
        response.json({
@@ -59,7 +59,7 @@ router.post('/', async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch('/:id', async (request, response, next) => {
+router.patch('/:id', auth, async (request, response, next) => {
     try {
         const {id} = request.params;
         const {body} = request;
@@ -75,7 +75,7 @@ router.patch('/:id', async (request, response, next) => {
 });
 
 // DELETE/users/:id
-router.delete('/:id', async (request, response, next) => {
+router.delete('/:id', auth, async (request, response, next) => {
     try {
         const { id } = request.params;
         await userUseCases.deleteById(id);

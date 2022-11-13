@@ -3,7 +3,7 @@ import * as authUseCases from '../useCases/auth.use.js';
 
 const router = express.Router();
 
-router.user('/login', async (request, response, next) => {
+router.post('/', async (request, response, next) => {
     try {
         const {email, password} = request.body;
         const token = await authUseCases.login(email, password);

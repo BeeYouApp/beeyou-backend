@@ -19,11 +19,14 @@ async function create(newUser) {
 
 // Update
 async function update(idUser, newData) {
-    const userFound = await User.findById(idUser);
+    const { password } = newData;
 
-    if(!userFound) throw new StatusHttp('No existe este user', 404);
-
-    return await User.updateOne({_id: idUser}, newData);
+    if(password) {
+        const encryptedPassword = await bcrypt.hash(password);
+        return await User.findByIdAndUpdate(idUser, {...newData, password: encryptedPassword});
+    } else {
+        return await User.findByIdAndUpdate(idUser, newData);
+    }
 }
 
 // Delete
