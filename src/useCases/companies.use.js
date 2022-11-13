@@ -3,17 +3,11 @@ import bcrypt from "../libs/bcrypt.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 
 function getAll() {
-  return Company.find({});
-  // .populate("discounts")
-  // .populate("events")
-  // .populate("ranking");
+  return Company.find({}).populate("discounts events ranking");
 }
 
 function getById(id) {
-  return Company.findById(id);
-  // .populate("discounts")
-  // .populate("events")
-  // .populate("ranking");
+  return Company.findById(id).populate("discounts events ranking");
 }
 
 function deleteById(id) {
