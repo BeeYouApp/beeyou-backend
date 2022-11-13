@@ -40,12 +40,12 @@ async function deleteById(idUser) {
 
 // Get By Id
 async function getById(idUser) {
-    return await User.findById(idUser);
+    return await User.findById(idUser).populate("events", "rankings"); // Doubt here, different string
 }
 
 // Get All
 async function getAll() {
-    return await User.find({});
+    return await User.find({}).populate("events rankings"); // Doubt here, same string
 }
 
 // GetAllByPage
