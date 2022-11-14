@@ -1,12 +1,13 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
-const saltRounds = 10;
+const saltRound = 10;
 
-function hash (plainText) {
-  return bcrypt.hash(plainText, saltRounds) // Promise
-};
+function hash(plainText) {
+  return bcrypt.hash(plainText, saltRound);
+}
 
 export default {
   ...bcrypt,
-  hash
+  hash,
 };
+

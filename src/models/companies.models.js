@@ -53,8 +53,7 @@ const companySchema = new mongoose.Schema({
     trim: true,
   },
   plan: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    type: String,
     enum: ["basic", "premium"],
     default: "basic",
   },
