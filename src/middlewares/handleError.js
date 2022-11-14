@@ -4,5 +4,4 @@ function errorHandle(error, request, response, next) {
     message: error.message,
   });
 }
-
 export { errorHandle };
