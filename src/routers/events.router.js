@@ -7,7 +7,7 @@ const router = express.Router();
 // La comunicación de fuera hacia dentro
 // Endpoint -> Casos de uso -> Modelos
 
-router.post("/", async (request, response, next) => {
+router.post("/", auth, async (request, response, next) => {
   try {
     const { body: newEvent } = request;
     await eventsUsesCases.create(newEvent);
@@ -21,7 +21,7 @@ router.post("/", async (request, response, next) => {
   }
 });
 
-router.get("/", auth, async (request, response, next) => {
+router.get("/", async (request, response, next) => {
   try {
     let allEvents;
     const page = request.query.page;
