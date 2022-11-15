@@ -1,6 +1,7 @@
 import express from "express";
 import * as company from "../useCases/companies.use.js";
 import { StatusHttp } from "../libs/statusHttp.js";
+import { auth } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -48,7 +49,7 @@ router.post("/", async (request, response, next) => {
   }
 });
 
-router.delete("/:id", async (request, response, next) => {
+router.delete("/:id", auth, async (request, response, next) => {
   try {
     const { id } = request.params;
     const companyDelete = await company.deleteById(id);
@@ -61,7 +62,7 @@ router.delete("/:id", async (request, response, next) => {
   }
 });
 
-router.patch("/:id", async (request, response, next) => {
+router.patch("/:id", auth, async (request, response, next) => {
   try {
     const companyUpdated = request.body;
     const { id } = request.params;

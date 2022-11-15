@@ -9,7 +9,7 @@ function auth(request, response, next) {
     if (!tokenDecoded) throw new Error("No autorizado");
     request.currentUser = tokenDecoded.id;
     // request.currentCompany = tokenDecoded.id; ???
-    // request.userCurrent = tokenDecoded.id
+    request.userCurrent = tokenDecoded.id;
     // request.roleCurrent = tokenDecoded.role
     next();
   } catch (error) {

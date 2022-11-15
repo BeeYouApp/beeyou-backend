@@ -1,5 +1,6 @@
 import express from "express";
-import * as discount from "../useCases/disounts.use.js";
+import * as company from "../useCases/companies.use.js";
+import * as discount from "../useCases/discounts.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 
@@ -11,7 +12,7 @@ router.get("/", async (request, response, next) => {
     response.json({
       success: true,
       data: {
-        company: allDiscounts,
+        discounts: allDiscounts,
       },
     });
   } catch (error) {
@@ -21,12 +22,11 @@ router.get("/", async (request, response, next) => {
 router.get("/:id", async (request, response, next) => {
   try {
     const { id } = request.params;
-
     const discountByID = await discount.getById(id);
     response.json({
       success: true,
       data: {
-        company: discountByID,
+        discount: discountByID,
       },
     });
   } catch (error) {
@@ -37,11 +37,16 @@ router.get("/:id", async (request, response, next) => {
 router.post("/", auth, async (request, response, next) => {
   try {
     const { body: newDiscount, userCurrent } = request;
+    console.log(userCurrent);
     const newDiscountData = await discount.create(newDiscount, userCurrent);
+    const pushDiscount = await company.createDiscount(
+      newDiscountData.company,
+      newDiscountData.id
+    );
     response.json({
       success: true,
       data: {
-        company: newDiscountData,
+        discount: newDiscountData,
       },
     });
   } catch (error) {
@@ -49,10 +54,11 @@ router.post("/", auth, async (request, response, next) => {
   }
 });
 
-router.delete("/:id", async (request, response, next) => {
+router.delete("/:id", auth, async (request, response, next) => {
   try {
     const { id } = request.params;
-    await discount.deleteById(id);
+    const { userCurrent } = request;
+    await discount.deleteById(id, userCurrent);
     response.status(200).json({
       success: true,
       message: "dicount Deleted!",
@@ -62,14 +68,18 @@ router.delete("/:id", async (request, response, next) => {
   }
 });
 
-router.patch("/:id", async (request, response, next) => {
+router.patch("/:id", auth, async (request, response, next) => {
   try {
-    const discountUpdated = request.body;
+    const { body: discountUpdated, userCurrent } = request;
     const { id } = request.params;
-    const updatedDiscount = await discount.updated(id, discountUpdated);
+    const updatedDiscount = await discount.updated(
+      id,
+      discountUpdated,
+      userCurrent
+    );
     response.json({
       success: true,
-      message: "company Updated!",
+      message: "discount Updated!",
       data: updatedDiscount,
     });
   } catch (error) {
