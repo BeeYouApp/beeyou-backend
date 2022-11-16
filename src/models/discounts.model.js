@@ -28,7 +28,6 @@ const discountSchema = new mongoose.Schema({
   },
   customDiscounts: {
     type: String,
-    required: true,
   },
   initialDate: {
     type: Date,
