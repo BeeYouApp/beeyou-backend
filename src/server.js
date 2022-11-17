@@ -3,6 +3,7 @@ import cors from "cors";
 import usersRouter from "./routers/user.router.js";
 import authRouter from "./routers/auth.router.js";
 import companies from "./routers/companies.router.js";
+import events from "./routers/events.router.js";
 import discounts from "./routers/discounts.router.js";
 
 const server = express();
@@ -20,7 +21,9 @@ server.get("/", (request, response) => {
 server.use("/users", usersRouter);
 server.use("/login", authRouter);
 server.use("/company", companies);
+server.use("/events", events);
 server.use("/discounts", discounts);
+
 // handleError located below
 
 export { server };
