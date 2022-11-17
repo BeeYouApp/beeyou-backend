@@ -1,7 +1,7 @@
 import express from "express";
 import * as eventsUsesCases from "../useCases/events.use.js";
 import { auth } from "../middlewares/auth.js";
-import { StatusHttp } from "../libs/errorCustom.js";
+import { StatusHttp } from "../libs/handleError.js";
 
 const router = express.Router();
 // La comunicación de fuera hacia dentro
