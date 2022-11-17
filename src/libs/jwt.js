@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 
-
 dotenv.config();
 
 const { JWT_SECRET } = process.env;
@@ -17,5 +16,5 @@ function verify(token) {
 export default {
   ...jwt,
   sign,
-  verify
+  verify,
 };

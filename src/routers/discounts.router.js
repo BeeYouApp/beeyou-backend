@@ -1,17 +1,18 @@
 import express from "express";
 import * as company from "../useCases/companies.use.js";
-import { StatusHttp } from "../libs/statusHttp.js";
+import * as discount from "../useCases/discounts.use.js";
 import { auth } from "../middlewares/auth.js";
+import { StatusHttp } from "../libs/statusHttp.js";
 
 const router = express.Router();
 
 router.get("/", async (request, response, next) => {
   try {
-    let allCompanies = await company.getAll();
+    let allDiscounts = await discount.getAll();
     response.json({
       success: true,
       data: {
-        company: allCompanies,
+        discounts: allDiscounts,
       },
     });
   } catch (error) {
@@ -21,12 +22,11 @@ router.get("/", async (request, response, next) => {
 router.get("/:id", async (request, response, next) => {
   try {
     const { id } = request.params;
-
-    const companyByID = await company.getById(id);
+    const discountByID = await discount.getById(id);
     response.json({
       success: true,
       data: {
-        company: companyByID,
+        discount: discountByID,
       },
     });
   } catch (error) {
@@ -34,14 +34,19 @@ router.get("/:id", async (request, response, next) => {
   }
 });
 
-router.post("/", async (request, response, next) => {
+router.post("/", auth, async (request, response, next) => {
   try {
-    const { body: newCompanyData } = request;
-    const newCompany = await company.create(newCompanyData);
+    const { body: newDiscount, userCurrent } = request;
+    console.log(userCurrent);
+    const newDiscountData = await discount.create(newDiscount, userCurrent);
+    const pushDiscount = await company.createDiscount(
+      newDiscountData.company,
+      newDiscountData.id
+    );
     response.json({
       success: true,
       data: {
-        company: newCompany,
+        discount: newDiscountData,
       },
     });
   } catch (error) {
@@ -52,10 +57,11 @@ router.post("/", async (request, response, next) => {
 router.delete("/:id", auth, async (request, response, next) => {
   try {
     const { id } = request.params;
-    const companyDelete = await company.deleteById(id);
+    const { userCurrent } = request;
+    await discount.deleteById(id, userCurrent);
     response.status(200).json({
       success: true,
-      message: "company Deleted!",
+      message: "dicount Deleted!",
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));
@@ -64,12 +70,17 @@ router.delete("/:id", auth, async (request, response, next) => {
 
 router.patch("/:id", auth, async (request, response, next) => {
   try {
-    const companyUpdated = request.body;
+    const { body: discountUpdated, userCurrent } = request;
     const { id } = request.params;
-    const updatedCompany = await company.updated(id, companyUpdated);
+    const updatedDiscount = await discount.updated(
+      id,
+      discountUpdated,
+      userCurrent
+    );
     response.json({
       success: true,
-      message: "company Updated!",
+      message: "discount Updated!",
+      data: updatedDiscount,
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));
