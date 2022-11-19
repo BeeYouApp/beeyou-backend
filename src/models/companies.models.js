@@ -125,6 +125,12 @@ const companySchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
+  racha: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  ],
 });
 
 const Company = mongoose.model("companies", companySchema);
