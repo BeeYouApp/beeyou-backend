@@ -41,6 +41,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  keyAvatar: {
+    type: String,
+  },
   events: [
     {
       type: mongoose.Schema.Types.ObjectId,

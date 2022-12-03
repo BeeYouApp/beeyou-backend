@@ -2,6 +2,7 @@ import express from "express";
 import * as company from "../useCases/companies.use.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import { auth } from "../middlewares/auth.js";
+import upload from "../middlewares/multer.js";
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get("/:id", async (request, response, next) => {
   }
 });
 
-router.post("/", async (request, response, next) => {
+router.post("/", upload.single("images"), async (request, response, next) => {
   try {
     const { body: newCompanyData } = request;
     const newCompany = await company.create(newCompanyData);

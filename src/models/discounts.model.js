@@ -43,6 +43,11 @@ const discountSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  keyImages: [
+    {
+      type: String,
+    },
+  ],
   company: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "companies",

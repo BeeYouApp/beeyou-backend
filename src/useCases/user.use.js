@@ -1,10 +1,12 @@
-import { StatusHttp } from "../libs/customError.js";
+import { StatusHttp } from "../libs/statusHttp.js";
 import { User } from "../models/user.model.js";
 import bcrypt from "../libs/bcrypt.js";
 
 // Create
-async function create(newUser) {
+async function create(newUser, file) {
   const { email, password } = newUser;
+  const { location, key } = file;
+  const userToSave = { ...newUser, avatar: location, keyAvatar: key };
   console.log(email, password);
   const userFound = await User.findOne({ email });
 
@@ -12,22 +14,22 @@ async function create(newUser) {
 
   const encryptedPassword = await bcrypt.hash(password);
   console.log(encryptedPassword);
-
-  return User.create({ ...newUser, password: encryptedPassword });
+  return User.create({ ...userToSave, password: encryptedPassword });
 }
 
 // Update
-async function update(idUser, newData) {
+async function update(idUser, newData, file) {
   const { password } = newData;
-
+  const { location, key } = file;
+  const userToSave = { ...newData, avatar: location, keyAvatar: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);
     return await User.findByIdAndUpdate(idUser, {
-      ...newData,
+      ...userToSave,
       password: encryptedPassword,
     });
   } else {
-    return await User.findByIdAndUpdate(idUser, newData);
+    return await User.findByIdAndUpdate(idUser, userToSave);
   }
 }
 

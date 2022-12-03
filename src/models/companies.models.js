@@ -103,6 +103,11 @@ const companySchema = new mongoose.Schema({
       trim: true,
     },
   ],
+  keyImages: [
+    {
+      type: String,
+    },
+  ],
   discounts: [
     {
       type: mongoose.Schema.Types.ObjectId,

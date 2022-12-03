@@ -3,6 +3,7 @@ import * as company from "../useCases/companies.use.js";
 import * as discount from "../useCases/discounts.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
+import upload from "../middlewares/multer.js";
 
 const router = express.Router();
 
@@ -34,25 +35,30 @@ router.get("/:id", async (request, response, next) => {
   }
 });
 
-router.post("/", auth, async (request, response, next) => {
-  try {
-    const { body: newDiscount, userCurrent } = request;
-    console.log(userCurrent);
-    const newDiscountData = await discount.create(newDiscount, userCurrent);
-    const pushDiscount = await company.createDiscount(
-      newDiscountData.company,
-      newDiscountData.id
-    );
-    response.json({
-      success: true,
-      data: {
-        discount: newDiscountData,
-      },
-    });
-  } catch (error) {
-    next(new StatusHttp(error.message, error.status, error.name));
+router.post(
+  "/",
+  auth,
+  upload.single("images"),
+  async (request, response, next) => {
+    try {
+      const { body: newDiscount, userCurrent } = request;
+      console.log(userCurrent);
+      const newDiscountData = await discount.create(newDiscount, userCurrent);
+      const pushDiscount = await company.createDiscount(
+        newDiscountData.company,
+        newDiscountData.id
+      );
+      response.json({
+        success: true,
+        data: {
+          discount: newDiscountData,
+        },
+      });
+    } catch (error) {
+      next(new StatusHttp(error.message, error.status, error.name));
+    }
   }
-});
+);
 
 router.delete("/:id", auth, async (request, response, next) => {
   try {
