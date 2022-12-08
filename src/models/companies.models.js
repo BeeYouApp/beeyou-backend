@@ -59,11 +59,9 @@ const companySchema = new mongoose.Schema({
   },
   verificationLevel: {
     type: Number,
-    required: true,
   },
   brandName: {
     type: String,
-    required: true,
     trim: true,
   },
   rfc: {
@@ -80,8 +78,7 @@ const companySchema = new mongoose.Schema({
       "Libreria",
       "Discoteca/Antro",
       "Ocio/Entetenimieto",
-    ],
-    required: true,
+    ]
   },
   rfcName: {
     type: String,
@@ -94,15 +91,14 @@ const companySchema = new mongoose.Schema({
   description: {
     type: String,
     trim: true,
-    required: true,
   },
-  image: [
-    {
-      type: String,
-      required: true,
-      trim: true,
-    },
-  ],
+  image:{
+    type: String,
+    trim: true,
+  },
+  keyImage:{
+    type: String,
+  },
   discounts: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -125,6 +121,12 @@ const companySchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
+  racha: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  ],
 });
 
 const Company = mongoose.model("companies", companySchema);

@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/The-Coding-Wizards/app-backend#readme",
   "dependencies": {
-    "aws-sdk": "^2.1255.0",
+    "aws-sdk": "^2.1266.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

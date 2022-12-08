@@ -17,9 +17,6 @@ const rankingSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  title: {
-    type: String,
-  },
   opinion: {
     type: String,
   },

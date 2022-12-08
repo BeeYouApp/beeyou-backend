@@ -37,12 +37,6 @@ const discountSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  image: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
   company: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "companies",

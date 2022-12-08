@@ -2,6 +2,7 @@ import express from "express";
 import * as company from "../useCases/companies.use.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import { auth } from "../middlewares/auth.js";
+import upload from "../middlewares/multer.js";
 
 const router = express.Router();
 
@@ -41,7 +42,7 @@ router.post("/", async (request, response, next) => {
     response.json({
       success: true,
       data: {
-        company: newCompany,
+        company: "Negocio creado",
       },
     });
   } catch (error) {
@@ -62,11 +63,11 @@ router.delete("/:id", auth, async (request, response, next) => {
   }
 });
 
-router.patch("/:id", auth, async (request, response, next) => {
+router.patch("/:id", auth, upload.single("image"), async (request, response, next) => {
   try {
-    const companyUpdated = request.body;
+    const {body: companyUpdated, file} = request;
     const { id } = request.params;
-    const updatedCompany = await company.updated(id, companyUpdated);
+    const updatedCompany = await company.updated(id, companyUpdated, file);
     response.json({
       success: true,
       message: "company Updated!",
