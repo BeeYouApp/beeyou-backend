@@ -23,4 +23,5 @@ const multerS3Config = multerS3({
   },
 });
 
-export const upload = multer({ storage: multerS3Config });
+const upload = multer({ storage: multerS3Config });
+export default upload;

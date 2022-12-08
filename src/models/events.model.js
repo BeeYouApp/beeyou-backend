@@ -49,12 +49,10 @@ const eventSchema = new mongoose.Schema({
     minLenght: 90,
     maxLenght: 300,
   },
-  images: [
-    {
+  images:{
       type: String,
       trim: true,
-    },
-  ],
+  },
   keyImages: [
     {
       type: String,

@@ -35,14 +35,14 @@ router.get("/:id", async (request, response, next) => {
   }
 });
 
-router.post("/", upload.single("images"), async (request, response, next) => {
+router.post("/", async (request, response, next) => {
   try {
     const { body: newCompanyData } = request;
     const newCompany = await company.create(newCompanyData);
     response.json({
       success: true,
       data: {
-        company: newCompany,
+        company: "Negocio creado",
       },
     });
   } catch (error) {
@@ -63,11 +63,11 @@ router.delete("/:id", auth, async (request, response, next) => {
   }
 });
 
-router.patch("/:id", auth, async (request, response, next) => {
+router.patch("/:id", auth, upload.single("image"), async (request, response, next) => {
   try {
-    const companyUpdated = request.body;
+    const {body: companyUpdated, file} = request;
     const { id } = request.params;
-    const updatedCompany = await company.updated(id, companyUpdated);
+    const updatedCompany = await company.updated(id, companyUpdated, file);
     response.json({
       success: true,
       message: "company Updated!",

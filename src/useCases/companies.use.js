@@ -18,10 +18,10 @@ async function create(newCompany) {
   const { email, password } = newCompany;
   const companyFound = await Company.findOne({ email });
   if (companyFound) throw new StatusHttp("Ya existe un Writer con este email");
-  const encryptedPassword = await bcrypt.hash(password); //
-
+  const encryptedPassword = await bcrypt.hash(password);
   return Company.create({ ...newCompany, password: encryptedPassword });
 }
+
 async function createDiscount(company, IdDiscount) {
   const data = await Company.findByIdAndUpdate(
     company,
@@ -50,17 +50,21 @@ async function deleteComment(idCard, idComment) {
   return data;
 }
 
-async function updated(idCompany, updatedCompany) {
+async function updated(idCompany, updatedCompany, file) {
   const { password } = updatedCompany;
+  const { location, key } = file;
+  if(!location){
+    location = ""
+    key = ""
+
+  }
+  const companyToSave = { ...updatedCompany, image: location, keyImage: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);
-    return Company.findByIdAndUpdate(idCompany, {
-      ...updatedCompany,
-      password: encryptedPassword,
-    });
+    return Company.findByIdAndUpdate(idCompany, {...companyToSave, password: encryptedPassword});
   } else {
-    return Company.findByIdAndUpdate(idCompany, updatedCompany);
+    return Company.findByIdAndUpdate(idCompany, companyToSave);
   }
 }
 
-export { getAll, getById, deleteById, updated, create, createDiscount };
+export { getAll, getById, deleteById, updated, create, createDiscount};

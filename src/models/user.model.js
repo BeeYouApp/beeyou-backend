@@ -15,27 +15,23 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true,
     trim: true,
     minLenght: 3,
     maxLenght: 35,
   },
   surname: {
     type: String,
-    required: true,
     trim: true,
     minLenght: 3,
     maxLenght: 35,
   },
   birthDate: {
     type: Date,
-    required: true,
     trim: true,
   },
   gender: {
     type: String,
     enum: ["Hombre", "Mujer", "Prefiero no decir"],
-    required: true,
   },
   avatar: {
     type: String,
