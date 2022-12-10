@@ -35,11 +35,13 @@ async function deleteById(idUser) {
 }
 
 async function getById(idUser) {
-  return await User.findById(idUser).populate("events rankings");
+  return await User.findById(idUser)
+  //.populate("events rankings");
 }
 
 async function getAll() {
-  return await User.find({}).populate("events rankings");
+  return await User.find({})
+  //.populate("events rankings");
 }
 
 async function getAllByPage(page, limit) {
