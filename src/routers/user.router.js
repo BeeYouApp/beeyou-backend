@@ -7,7 +7,7 @@ import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
 
-router.get("/", auth, access(), async (request, response, next) => {
+router.get("/", async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -27,7 +27,6 @@ router.get("/", auth, access(), async (request, response, next) => {
   }
 });
 
-// GET/users/:id
 router.get("/:id", auth, async (request, response, next) => {
   try {
     const { id } = request.params;
@@ -42,11 +41,10 @@ router.get("/:id", auth, async (request, response, next) => {
   }
 });
 
-// POST/users/
 router.post("/", async (request, response, next) => {
   try {
-    const { body: newUser, file } = request; // const newUser = request.body;
-    await userUseCases.create(newUser, file);
+    const { body: newUser } = request;
+    await userUseCases.create(newUser);
 
     response.json({
       success: true,
