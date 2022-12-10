@@ -24,6 +24,5 @@ server.use("/company", companies);
 server.use("/events", events);
 server.use("/discounts", discounts);
 
-// handleError located below
 
 export { server };

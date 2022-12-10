@@ -3,16 +3,13 @@ import * as eventsUsesCases from "../useCases/events.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
+import {access} from '../middlewares/accessRole.js'
 
 const router = express.Router();
 // La comunicación de fuera hacia dentro
 // Endpoint -> Casos de uso -> Modelos
 
-router.post(
-  "/",
-  auth,
-  upload.single("images"),
-  async (request, response, next) => {
+router.post("/", auth, upload.single("images"), async (request, response, next) => {
     try {
       const { body: newEvent } = request;
       await eventsUsesCases.create(newEvent);

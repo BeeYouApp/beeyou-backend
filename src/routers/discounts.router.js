@@ -4,6 +4,7 @@ import * as discount from "../useCases/discounts.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
+import {access} from '../middlewares/accessRole.js'
 
 const router = express.Router();
 

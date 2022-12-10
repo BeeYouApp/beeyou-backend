@@ -1,14 +1,13 @@
 import express from "express";
 import * as userUseCases from "../useCases/user.use.js";
-import { auth } from "../middlewares/auth.js"; // Auth
-import { StatusHttp } from "../libs/statusHttp.js"; // StatusHttp
+import { auth } from "../middlewares/auth.js";
+import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
+import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
-// Endpoint -> Use cases -> Models
 
-// GET/users
-router.get("/", async (request, response, next) => {
+router.get("/", auth, access(), async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
