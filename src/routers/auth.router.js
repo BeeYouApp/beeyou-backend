@@ -3,10 +3,24 @@ import * as authUseCases from '../useCases/auth.use.js';
 
 const router = express.Router();
 
-router.post('/', async (request, response, next) => {
+router.post('/user', async (request, response, next) => {
     try {
         const {email, password} = request.body;
-        const token = await authUseCases.login(email, password);
+        const token = await authUseCases.loginUser(email, password);
+        response.json({
+            success: true,
+            token
+        });
+    } catch (error) {
+        response.status(400);
+        next(error);
+    }
+})
+
+router.post('/company', async (request, response, next) => {
+    try {
+        const {email, password} = request.body;
+        const token = await authUseCases.loginCompany(email, password);
         response.json({
             success: true,
             token

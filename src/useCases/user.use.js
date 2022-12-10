@@ -20,7 +20,7 @@ async function create(newUser, file) {
 // Update
 async function update(idUser, newData, file) {
   const { password } = newData;
-  const { location, key } = file;
+  let { location, key } = file;
   const userToSave = { ...newData, avatar: location, keyAvatar: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);

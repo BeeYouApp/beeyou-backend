@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", async (request, response, next) => {
   try {
-    let allCompanies = await company.getAll();
+    const allCompanies = await company.getAll();
     response.json({
       success: true,
       data: {

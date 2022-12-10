@@ -44,7 +44,7 @@ router.get("/:id", auth, async (request, response, next) => {
 });
 
 // POST/users/
-router.post("/", upload.single("avatar"), async (request, response, next) => {
+router.post("/", async (request, response, next) => {
   try {
     const { body: newUser, file } = request; // const newUser = request.body;
     await userUseCases.create(newUser, file);
@@ -59,7 +59,7 @@ router.post("/", upload.single("avatar"), async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch("/:id", auth, async (request, response, next) => {
+router.patch("/:id", auth, upload.single("avatar"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body } = request;
