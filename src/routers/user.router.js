@@ -1,14 +1,13 @@
 import express from "express";
 import * as userUseCases from "../useCases/user.use.js";
-import { auth } from "../middlewares/auth.js"; // Auth
-import { StatusHttp } from "../libs/statusHttp.js"; // StatusHttp
+import { auth } from "../middlewares/auth.js";
+import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
+import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
-// Endpoint -> Use cases -> Models
 
-// GET/users
-router.get("/", async (request, response, next) => {
+router.get("/", auth, access(), async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -44,7 +43,7 @@ router.get("/:id", auth, async (request, response, next) => {
 });
 
 // POST/users/
-router.post("/", upload.single("avatar"), async (request, response, next) => {
+router.post("/", async (request, response, next) => {
   try {
     const { body: newUser, file } = request; // const newUser = request.body;
     await userUseCases.create(newUser, file);
@@ -59,7 +58,7 @@ router.post("/", upload.single("avatar"), async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch("/:id", auth, async (request, response, next) => {
+router.patch("/:id", auth, upload.single("avatar"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body } = request;

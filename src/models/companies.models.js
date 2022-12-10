@@ -127,6 +127,11 @@ const companySchema = new mongoose.Schema({
       ref: "users",
     },
   ],
+  role: {
+    type: String,
+    enum: ["User", "Company"],
+    default: "Company"
+  }
 });
 
 const Company = mongoose.model("companies", companySchema);

@@ -58,6 +58,11 @@ const userSchema = new mongoose.Schema({
       ref: "companies",
     },
   ],
+  role: {
+    type: String,
+    enum: ["User", "Company"],
+    default: "User"
+  }
 });
 
 const User = mongoose.model("users", userSchema);

@@ -52,19 +52,14 @@ async function deleteComment(idCard, idComment) {
 
 async function updated(idCompany, updatedCompany, file) {
   const { password } = updatedCompany;
-  const { location, key } = file;
-  if(!location){
-    location = ""
-    key = ""
-
-  }
-  const companyToSave = { ...updatedCompany, image: location, keyImage: key };
+  const { location, key} = file;
+  const companyToSave = { ...newData, image: location, keyImage: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);
     return Company.findByIdAndUpdate(idCompany, {...companyToSave, password: encryptedPassword});
-  } else {
-    return Company.findByIdAndUpdate(idCompany, companyToSave);
   }
+  return Company.findByIdAndUpdate(idCompany, companyToSave);
 }
 
-export { getAll, getById, deleteById, updated, create, createDiscount};
+
+export { create, getAll, getById, deleteById, updated, createDiscount, deleteDiscount, deleteComment};

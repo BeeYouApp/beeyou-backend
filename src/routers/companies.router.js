@@ -3,12 +3,13 @@ import * as company from "../useCases/companies.use.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import { auth } from "../middlewares/auth.js";
 import upload from "../middlewares/multer.js";
+import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
 
-router.get("/", async (request, response, next) => {
+router.get("/", auth, access("User", "Company"), async (request, response, next) => {
   try {
-    let allCompanies = await company.getAll();
+    const allCompanies = await company.getAll();
     response.json({
       success: true,
       data: {
