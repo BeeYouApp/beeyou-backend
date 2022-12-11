@@ -9,7 +9,7 @@ router.post('/user', async (request, response, next) => {
         const token = await authUseCases.loginUser(email, password);
         response.json({
             success: true,
-            token
+            token: token
         });
     } catch (error) {
         response.status(400);
@@ -23,7 +23,7 @@ router.post('/company', async (request, response, next) => {
         const token = await authUseCases.loginCompany(email, password);
         response.json({
             success: true,
-            token
+            token: token
         });
     } catch (error) {
         response.status(400);

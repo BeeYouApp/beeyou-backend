@@ -7,7 +7,7 @@ import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
 
-router.get("/", auth, access("User", "Company"), async (request, response, next) => {
+router.get("/", auth, access("User"), async (request, response, next) => {
   try {
     const allCompanies = await company.getAll();
     response.json({
@@ -20,7 +20,7 @@ router.get("/", auth, access("User", "Company"), async (request, response, next)
     next(new StatusHttp(error.message, error.status, error.name));
   }
 });
-router.get("/:id", async (request, response, next) => {
+router.get("/:id", auth, access("User", "Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
 
@@ -51,7 +51,7 @@ router.post("/", async (request, response, next) => {
   }
 });
 
-router.delete("/:id", auth, async (request, response, next) => {
+router.delete("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const companyDelete = await company.deleteById(id);
@@ -64,7 +64,7 @@ router.delete("/:id", auth, async (request, response, next) => {
   }
 });
 
-router.patch("/:id", auth, upload.single("image"), async (request, response, next) => {
+router.patch("/:id", auth, access("Company"), upload.single("image"), async (request, response, next) => {
   try {
     const {body: companyUpdated, file} = request;
     const { id } = request.params;

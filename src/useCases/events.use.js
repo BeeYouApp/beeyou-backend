@@ -18,7 +18,7 @@ async function update(idEvent, newData) {
 }
 
 async function deleteById(idEvent) {
-  //vincular a cia
+  //vincular a company
   const eventFound = await Event.findById(idEvent);
 
   if (!eventFound) throw new StatusHttp("No existe este evento", 404);
@@ -33,7 +33,7 @@ async function getById(idEvent) {
 
 async function getEventsByCompany(idEvent) {
   //INSERT POPULATE HERE
-  return await Event.findById(idEvent);
+  return await Event.findById(idEvent).populate("company attendance");
 }
 
 async function getAll() {
@@ -41,12 +41,12 @@ async function getAll() {
 }
 
 async function getAllbyCompany() {
-  return await Event.find({}); // Regresa una promesa //INSERT POPULATE HERE
+  return await Event.find({}).populate("company attendance"); // Regresa una promesa //INSERT POPULATE HERE
 }
 
 async function getAllByPage(page, limit) {
   //TBD numero de eventos por página
-  return await Event.find()
+  return await Event.find().populate("company attendance")
     .sort({ createdAt: -1 })
     .skip((page - 1) * limit)
     .limit(limit);
