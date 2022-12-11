@@ -1,5 +1,5 @@
 import { StatusHttp } from "../libs/statusHttp.js";
-import { User } from "../models/user.model.js";
+import { User } from "../models/users.model.js";
 import bcrypt from "../libs/bcrypt.js";
 
 async function create(newUser) {
@@ -35,18 +35,16 @@ async function deleteById(idUser) {
 }
 
 async function getById(idUser) {
-  return await User.findById(idUser)
-  //.populate("events rankings");
+  return await User.findById(idUser).populate("events rankings");
 }
 
 async function getAll() {
-  return await User.find({})
-  //.populate("events rankings");
+  return await User.find({}).populate("events rankings");
 }
 
 async function getAllByPage(page, limit) {
   console.log(limit);
-  return await User.find()
+  return await User.find().populate("events rankings")
     .sort({ createdAt: -1 })
     .skip((page - 1) * limit)
     .limit(limit);

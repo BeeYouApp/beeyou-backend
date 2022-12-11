@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-// Schema de discounts
-
 const discountSchema = new mongoose.Schema({
   name: {
     type: String,

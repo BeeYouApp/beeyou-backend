@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-// User's schema
-
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -46,7 +44,7 @@ const userSchema = new mongoose.Schema({
       ref: "events",
     },
   ],
-  rankings: [
+  ranking: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "rankings",

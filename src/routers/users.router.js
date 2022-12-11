@@ -1,5 +1,5 @@
 import express from "express";
-import * as userUseCases from "../useCases/user.use.js";
+import * as userUseCases from "../useCases/users.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
@@ -7,7 +7,8 @@ import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
 
-router.get("/", async (request, response, next) => {
+// es necesario este endpoint?
+router.get("/", auth, access("User"),  async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -27,7 +28,7 @@ router.get("/", async (request, response, next) => {
   }
 });
 
-router.get("/:id", auth, async (request, response, next) => {
+router.get("/:id", auth, access("User"), async (request, response, next) => {
   try {
     const { id } = request.params;
     let user = await userUseCases.getById(id);
@@ -56,7 +57,7 @@ router.post("/", async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch("/:id", auth, upload.single("avatar"), async (request, response, next) => {
+router.patch("/:id", auth, access("User"), upload.single("avatar"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body } = request;
@@ -72,7 +73,7 @@ router.patch("/:id", auth, upload.single("avatar"), async (request, response, ne
 });
 
 // DELETE/users/:id
-router.delete("/:id", auth, async (request, response, next) => {
+router.delete("/:id", auth, access("User"), async (request, response, next) => {
   try {
     const { id } = request.params;
     await userUseCases.deleteById(id);

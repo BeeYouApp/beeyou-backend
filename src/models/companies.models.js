@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Schema de company
 const AddressSchema = new mongoose.Schema({
   street: {
     type: String,
@@ -114,7 +113,7 @@ const companySchema = new mongoose.Schema({
   ranking: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ranking",
+      ref: "rankings",
     },
   ],
   address: AddressSchema,
