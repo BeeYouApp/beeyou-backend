@@ -4,6 +4,7 @@ import { StatusHttp } from "../libs/statusHttp.js";
 import { auth } from "../middlewares/auth.js";
 import upload from "../middlewares/multer.js";
 import {access} from "../middlewares/accessRole.js"
+import * as authUseCases from '../useCases/auth.use.js';
 
 const router = express.Router();
 
@@ -40,11 +41,12 @@ router.post("/", async (request, response, next) => {
   try {
     const { body: newCompanyData } = request;
     const newCompany = await company.create(newCompanyData);
+    const token = await authUseCases.loginCompany(newCompanyData.email, newCompanyData.password);
     response.json({
       success: true,
-      data: {
-        company: "Negocio creado",
-      },
+      company: "Negocio creado",
+      user: newCompany._id,
+      token: token
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));

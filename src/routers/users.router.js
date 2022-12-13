@@ -4,6 +4,7 @@ import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
 import {access} from "../middlewares/accessRole.js"
+import * as authUseCases from '../useCases/auth.use.js';
 
 const router = express.Router();
 
@@ -45,11 +46,14 @@ router.get("/:id", auth, access("User"), async (request, response, next) => {
 router.post("/", async (request, response, next) => {
   try {
     const { body: newUser } = request;
-    await userUseCases.create(newUser);
-
+    const data = await userUseCases.create(newUser);
+    const token = await authUseCases.loginUser(newUser.email, newUser.password);
+    console.log(data)
     response.json({
       success: true,
       message: "¡Usuario creado!",
+      user: data._id,
+      token: token
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));
