@@ -3,16 +3,12 @@ import * as eventsUsesCases from "../useCases/events.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
+import {access} from '../middlewares/accessRole.js'
 
 const router = express.Router();
-// La comunicación de fuera hacia dentro
-// Endpoint -> Casos de uso -> Modelos
 
-router.post(
-  "/",
-  auth,
-  upload.single("images"),
-  async (request, response, next) => {
+//actualizar para las referencias a la compañia
+router.post("/", auth, access("Company"),  upload.single("images"), async (request, response, next) => {
     try {
       const { body: newEvent } = request;
       await eventsUsesCases.create(newEvent);
@@ -27,7 +23,7 @@ router.post(
   }
 );
 
-router.get("/", async (request, response, next) => {
+router.get("/", auth, access("User", "Company"), async (request, response, next) => {
   try {
     let allEvents;
     const page = request.query.page;
@@ -48,7 +44,7 @@ router.get("/", async (request, response, next) => {
   }
 });
 
-router.get("/:id", auth, async (request, response, next) => {
+router.get("/:id", auth, access("User", "Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     let event = await eventsUsesCases.getById(id);
@@ -63,7 +59,7 @@ router.get("/:id", auth, async (request, response, next) => {
   }
 });
 
-router.patch("/:id", auth, async (request, response, next) => {
+router.patch("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body } = request;
@@ -78,7 +74,7 @@ router.patch("/:id", auth, async (request, response, next) => {
   }
 });
 
-router.delete("/:id", auth, async (request, response, next) => {
+router.delete("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     await eventsUsesCases.deleteById(id);

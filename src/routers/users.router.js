@@ -1,14 +1,14 @@
 import express from "express";
-import * as userUseCases from "../useCases/user.use.js";
-import { auth } from "../middlewares/auth.js"; // Auth
-import { StatusHttp } from "../libs/statusHttp.js"; // StatusHttp
+import * as userUseCases from "../useCases/users.use.js";
+import { auth } from "../middlewares/auth.js";
+import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
+import {access} from "../middlewares/accessRole.js"
 
 const router = express.Router();
-// Endpoint -> Use cases -> Models
 
-// GET/users
-router.get("/", async (request, response, next) => {
+// es necesario este endpoint?
+router.get("/", auth, access("User"),  async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -28,8 +28,7 @@ router.get("/", async (request, response, next) => {
   }
 });
 
-// GET/users/:id
-router.get("/:id", auth, async (request, response, next) => {
+router.get("/:id", auth, access("User"), async (request, response, next) => {
   try {
     const { id } = request.params;
     let user = await userUseCases.getById(id);
@@ -43,11 +42,10 @@ router.get("/:id", auth, async (request, response, next) => {
   }
 });
 
-// POST/users/
-router.post("/", upload.single("avatar"), async (request, response, next) => {
+router.post("/", async (request, response, next) => {
   try {
-    const { body: newUser, file } = request; // const newUser = request.body;
-    await userUseCases.create(newUser, file);
+    const { body: newUser } = request;
+    await userUseCases.create(newUser);
 
     response.json({
       success: true,
@@ -59,7 +57,7 @@ router.post("/", upload.single("avatar"), async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch("/:id", auth, async (request, response, next) => {
+router.patch("/:id", auth, access("User"), upload.single("avatar"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body } = request;
@@ -75,7 +73,7 @@ router.patch("/:id", auth, async (request, response, next) => {
 });
 
 // DELETE/users/:id
-router.delete("/:id", auth, async (request, response, next) => {
+router.delete("/:id", auth, access("User"), async (request, response, next) => {
   try {
     const { id } = request.params;
     await userUseCases.deleteById(id);

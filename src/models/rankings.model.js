@@ -1,24 +1,23 @@
 import mongoose from "mongoose";
 
-// Schema de ranking
-
 const rankingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-    required: true,
+    required: true
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "companies",
-    required: true,
+    required: true
   },
   valoration: {
     type: Number,
-    required: true,
+    required: true
   },
   opinion: {
     type: String,
+    required: true
   },
 });
 

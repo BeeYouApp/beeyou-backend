@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Schema de company
 const AddressSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -85,7 +84,7 @@ const companySchema = new mongoose.Schema({
   ranking: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ranking",
+      ref: "rankings",
     },
   ],
   address:{
@@ -102,6 +101,11 @@ const companySchema = new mongoose.Schema({
       ref: "users",
     },
   ],
+  role: {
+    type: String,
+    enum: ["User", "Company"],
+    default: "Company"
+  }
 });
 
 const Company = mongoose.model("companies", companySchema);
