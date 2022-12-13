@@ -2,42 +2,13 @@ import mongoose from "mongoose";
 
 // Schema de company
 const AddressSchema = new mongoose.Schema({
-  street: {
+  type: {
     type: String,
-    required: true,
+    default: "Point",
   },
-  numExt: {
-    type: String,
-    required: true,
-  },
-  numInt: {
-    type: String,
-    required: true,
-  },
-  municipality: {
-    type: String,
-    required: true,
-  },
-  country: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  },
-  cp: {
-    type: String,
-    required: true,
-  },
-  latitud: {
-    type: Number,
-    required: true,
-  },
-  longitud: {
-    type: Number,
-    required: true,
-  },
+  coordinates: {
+    type: [Number],
+  }
 });
 
 const companySchema = new mongoose.Schema({
@@ -117,7 +88,11 @@ const companySchema = new mongoose.Schema({
       ref: "ranking",
     },
   ],
-  address: AddressSchema,
+  address:{
+    type: String,
+    trim: true,
+  },
+  coordinates: AddressSchema,
   avatar: {
     type: String,
   },
