@@ -7,7 +7,7 @@ function auth(request, response, next) {
     const tokenDecoded = jwt.verify(token);
 
     if (!tokenDecoded) throw new Error("No autorizado"); // Modificar error
-    request.currenUser = tokenDecoded.id;
+    request.currentUser = tokenDecoded.id;
     request.roleCurrent = tokenDecoded.role
     next();
   } catch (error) {

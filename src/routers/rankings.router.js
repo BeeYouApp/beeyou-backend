@@ -24,8 +24,8 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
 //es necesario este endpoint?
 router.get("/me", auth, access("User"), async (request, response, next) => {
   try {
-    const { currenUser } = request;
-    allRankings = await rankingUseCase.getByUser(currenUser);
+    const { currentUser } = request;
+    allRankings = await rankingUseCase.getByUser(currentUser);
     response.json({
       success: true,
       data: {
@@ -40,8 +40,8 @@ router.get("/me", auth, access("User"), async (request, response, next) => {
 router.post("/:id", auth, access("User"),async (request, response, next) => {
   try {
     const { id } = request.params;
-    const {body: newRankingData, currenUser} = request;
-    const newRanking = await rankingUseCase.create(newRankingData, currenUser, id);
+    const {body: newRankingData, currentUser} = request;
+    const newRanking = await rankingUseCase.create(newRankingData, currentUser, id);
     const pushRanking = await companyUseCase.createRanking(
         id,
         newRanking.id
@@ -62,9 +62,9 @@ router.post("/:id", auth, access("User"),async (request, response, next) => {
 
 router.patch("/:id", auth, access("User"),async (request, response, next) => {
   try {
-    const {body: rankingUpdated, currenUser} = request;
+    const {body: rankingUpdated, currentUser} = request;
     const { id } = request.params;
-    const updatedRanking = await rankingUseCase.update(id, currenUser, rankingUpdated);
+    const updatedRanking = await rankingUseCase.update(id, currentUser, rankingUpdated);
     response.json({
       success: true,
       data: {
@@ -79,10 +79,10 @@ router.patch("/:id", auth, access("User"),async (request, response, next) => {
 router.delete("/:id", auth, access("User"),async (request, response, next) => {
   try {
     const { id } = request.params;
-    const { currenUser } = request;
-    const rankingDeleted = await rankingUseCase.deleteById(id, currenUser);
+    const { currentUser } = request;
+    const rankingDeleted = await rankingUseCase.deleteById(id, currentUser);
     const companyUpdated = await companyUseCase.deleteRanking(
-        currenUser,
+        currentUser,
         id
     );
     response.json({
