@@ -82,6 +82,26 @@ async function deleteRanking(idCompany, idRanking) {
   return data;
 }
 
+//manejar errores
+async function createEvent(company, idRanking) {
+  const data = await Company.findByIdAndUpdate(
+    company,
+    { $push: { ranking: idRanking } },
+    { new: true }
+  );
+  if (!data) throw new StatusHttp("An error ocurred", 404);
+  return data;
+}
+//manejar errores poblar compania con ranking y validar que exista el ranking y la compañia
+async function deleteEvent(idCompany, idEvent) {
+  const data = await Company.findByIdAndUpdate(
+    idCompany,
+    { $pull: { events: idEvent } },
+    { new: true }
+  );
+  return data;
+}
 
 
-export { create, getAll, getById, deleteById, updated, createDiscount, deleteDiscount, createRanking, deleteRanking};
+export { create, getAll, getById, deleteById, updated, createDiscount, deleteDiscount,
+createRanking, deleteRanking, deleteEvent, createEvent};

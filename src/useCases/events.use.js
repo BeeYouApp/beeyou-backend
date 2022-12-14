@@ -1,29 +1,37 @@
 import { StatusHttp } from "../libs/statusHttp.js";
 import { Event } from "../models/events.model.js";
-//import bcrypt from '../libs/bcrypt.js';
+import { Company } from "../models/companies.models.js";
 
-async function create(newEvent) {
+async function create(newEvent, company) {
   //nombre duplicado y compañia
-
-  return await Event.create({ ...newEvent });
+  const companyFound = await Company.findById(company);
+  if (!companyFound) throw new StatusHttp("No existe esta compañia", 404);
+  const event = await Discounts.create({ ...newDiscount, company: company }); 
+  if (!event) throw new StatusHttp("An error ocurred", 400);
+  return  event
 }
 
-async function update(idEvent, newData) {
+async function update(idEvent, newData, company) {
   // cómo validar si es de una compañía
-  const eventFound = await Event.findById(idEvent);
-
+  const eventFound = await Event.findById(idEvent).populate("company");
   if (!eventFound) throw new StatusHttp("No existe este evento", 404);
-
-  return await Event.updateOne({ _id: idEvent }, newData);
+  if(eventFound.company._id === company){
+    return await Event.findByIdAndUpdate(idEvent, newData);
+  } else {
+    throw new StatusHttp("No puedes actualizar un descuento que no te pertenece");
+  }
 }
 
-async function deleteById(idEvent) {
+async function deleteById(idEvent, company) {
   //vincular a company
-  const eventFound = await Event.findById(idEvent);
+  const eventFound = await Event.findById(idEvent).populate("company");
 
-  if (!eventFound) throw new StatusHttp("No existe este evento", 404);
-
-  return await Event.deleteOne({ _id: idEvent });
+  if (eventFound.company._id == company){
+     return await Event.findByIdAndDelete({ _id: idEvent });
+  } else{
+    throw new StatusHttp("No existe este evento", 404);
+  }
+ 
 }
 
 async function getById(idEvent) {

@@ -1,5 +1,6 @@
 import express from "express";
 import * as eventsUsesCases from "../useCases/events.use.js";
+import * as company from "../useCases/companies.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
@@ -10,9 +11,12 @@ const router = express.Router();
 //actualizar para las referencias a la compañia
 router.post("/", auth, access("Company"),  upload.single("images"), async (request, response, next) => {
     try {
-      const { body: newEvent } = request;
-      await eventsUsesCases.create(newEvent);
-
+      const { body: newEvent, currenUser } = request;
+      const newEventData = await eventsUsesCases.create(newEvent, currenUser);
+      const pushEvent = await company.createEvent(
+        newEventData.company,
+        newEventData.id
+      );
       response.json({
         success: true,
         message: "¡Evento creado!",
@@ -62,8 +66,8 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
 router.patch("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
-    const { body } = request;
-    await eventsUsesCases.update(id, body);
+    const { bod, currenUser } = request;
+    await eventsUsesCases.update(id, body, currenUser);
 
     response.json({
       success: true,
@@ -77,8 +81,12 @@ router.patch("/:id", auth, access("Company"), async (request, response, next) =>
 router.delete("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
-    await eventsUsesCases.deleteById(id);
-
+    const { currenUser } = request;
+    await eventsUsesCases.deleteById(id,currenUser);
+    const companyUpdated = await company.deleteEvent(
+      currenUser,
+      id
+  );
     response.json({
       success: true,
       message: "Evento eliminado",

@@ -39,7 +39,6 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
 router.post("/", auth, access("Company"), upload.single("images"), async (request, response, next) => {
     try {
       const { body: newDiscount, currenUser } = request;
-      console.log(currenUser);
       const newDiscountData = await discount.create(newDiscount, currenUser);
       const pushDiscount = await company.createDiscount(
         newDiscountData.company,
@@ -81,6 +80,8 @@ router.delete("/:id", auth, access("Company"),  async (request, response, next) 
     const { id } = request.params;
     const { currenUser } = request;
     await discount.deleteById(id, currenUser);
+    const pushDiscount = await company.deleteDiscount(
+      currenUser, id);
     response.status(200).json({
       success: true,
       message: "discount Deleted!",

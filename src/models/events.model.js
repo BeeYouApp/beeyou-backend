@@ -44,7 +44,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    minLenght: 90,
+    minLenght: 10,
     maxLenght: 300,
   },
   images:{
