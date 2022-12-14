@@ -56,7 +56,8 @@ router.post("/", async (request, response, next) => {
 router.delete("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
-    const companyDelete = await company.deleteById(id);
+    const { currentUser } = request;
+    const companyDelete = await company.deleteById(id,currentUser);
     response.status(200).json({
       success: true,
       message: "company Deleted!",

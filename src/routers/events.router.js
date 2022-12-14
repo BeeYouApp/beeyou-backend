@@ -11,8 +11,8 @@ const router = express.Router();
 //actualizar para las referencias a la compañia
 router.post("/", auth, access("Company"),  upload.single("images"), async (request, response, next) => {
     try {
-      const { body: newEvent, currenUser } = request;
-      const newEventData = await eventsUsesCases.create(newEvent, currenUser);
+      const { body: newEvent, currentUser } = request;
+      const newEventData = await eventsUsesCases.create(newEvent, currentUser);
       const pushEvent = await company.createEvent(
         newEventData.company,
         newEventData.id
@@ -66,8 +66,8 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
 router.patch("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
-    const { bod, currenUser } = request;
-    await eventsUsesCases.update(id, body, currenUser);
+    const { body, currentUser } = request;
+    await eventsUsesCases.update(id, body, currentUser);
 
     response.json({
       success: true,
@@ -81,10 +81,10 @@ router.patch("/:id", auth, access("Company"), async (request, response, next) =>
 router.delete("/:id", auth, access("Company"), async (request, response, next) => {
   try {
     const { id } = request.params;
-    const { currenUser } = request;
-    await eventsUsesCases.deleteById(id,currenUser);
+    const { currentUser } = request;
+    await eventsUsesCases.deleteById(id,currentUser);
     const companyUpdated = await company.deleteEvent(
-      currenUser,
+      currentUser,
       id
   );
     response.json({
