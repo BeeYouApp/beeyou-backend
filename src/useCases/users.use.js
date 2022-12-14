@@ -10,19 +10,39 @@ async function create(newUser) {
   return User.create({ ...newUser, password: encryptedPassword });
 }
 
-// actualizar con validacion de imagen
 async function update(idUser, newData, file) {
   const { password } = newData;
-  let { location, key } = file;
-  const userToSave = { ...newData, avatar: location, keyAvatar: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);
-    return await User.findByIdAndUpdate(idUser, {
-      ...userToSave,
-      password: encryptedPassword,
-    });
+    if(file){
+      const user = await User.findById(idUser);
+      if (user.avatar && user.keyAvatar) {
+      s3.deleteObject({
+        Key: user.keyAvatar,
+        Bucket: process.env.AWS_BUCKET_NAME
+      }).promise();
+    }
+      const { location, key } = file;
+      const userToSave = { ...newData, avatar: location, keyAvatar: key };
+      return await User.findByIdAndUpdate(idUser, {...userToSave, password: encryptedPassword,});
+    }else{
+      return await User.findByIdAndUpdate(idUser, {...newData, password: encryptedPassword,});
+    }
   } else {
-    return await User.findByIdAndUpdate(idUser, userToSave);
+    if(file){
+      const user = await User.findById(idUser);
+      if (user.avatar && user.keyAvatar) {
+      s3.deleteObject({
+        Key: user.keyAvatar,
+        Bucket: process.env.AWS_BUCKET_NAME
+      }).promise();
+    }
+      const { location, key } = file;
+      const userToSave = { ...newData, avatar: location, keyAvatar: key };
+      return await User.findByIdAndUpdate(idUser, userToSave);
+    }else{
+      return await User.findByIdAndUpdate(idUser, newData);
+    }
   }
 }
 
