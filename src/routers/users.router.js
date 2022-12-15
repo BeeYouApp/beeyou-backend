@@ -3,13 +3,13 @@ import * as userUseCases from "../useCases/users.use.js";
 import { auth } from "../middlewares/auth.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import upload from "../middlewares/multer.js";
-import {access} from "../middlewares/accessRole.js"
-import * as authUseCases from '../useCases/auth.use.js';
+import { access } from "../middlewares/accessRole.js";
+import * as authUseCases from "../useCases/auth.use.js";
 
 const router = express.Router();
 
 // es necesario este endpoint?
-router.get("/", auth, access("User"),  async (request, response, next) => {
+router.get("/", auth, access("User"), async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -47,13 +47,13 @@ router.post("/", async (request, response, next) => {
   try {
     const { body: newUser } = request;
     const data = await userUseCases.create(newUser);
-    const token = await authUseCases.loginUser(newUser.email, newUser.password);
-    console.log(data)
+    const token = await authUseCases.login(newUser.email, newUser.password);
+    console.log(data);
     response.json({
       success: true,
       message: "¡Usuario creado!",
       user: data._id,
-      token: token
+      token: token,
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));
@@ -61,20 +61,26 @@ router.post("/", async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch("/:id", auth, access("User"), upload.single("avatar"), async (request, response, next) => {
-  try {
-    const { id } = request.params;
-    const { body } = request;
-    await userUseCases.update(id, body);
+router.patch(
+  "/:id",
+  auth,
+  access("User"),
+  upload.single("avatar"),
+  async (request, response, next) => {
+    try {
+      const { id } = request.params;
+      const { body } = request;
+      await userUseCases.update(id, body);
 
-    response.json({
-      success: true,
-      message: "¡User actualizado!",
-    });
-  } catch (error) {
-    next(new StatusHttp(error.message, error.status, error.name));
+      response.json({
+        success: true,
+        message: "¡User actualizado!",
+      });
+    } catch (error) {
+      next(new StatusHttp(error.message, error.status, error.name));
+    }
   }
-});
+);
 
 // DELETE/users/:id
 router.delete("/:id", auth, access("User"), async (request, response, next) => {
