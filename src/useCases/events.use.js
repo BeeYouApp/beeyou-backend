@@ -6,7 +6,7 @@ async function create(newEvent, company) {
   //nombre duplicado y compañia
   const companyFound = await Company.findById(company);
   if (!companyFound) throw new StatusHttp("No existe esta compañia", 404);
-  const event = await Discounts.create({ ...newDiscount, company: company }); 
+  const event = await Event.create({ ...newDiscount, company: company }); 
   if (!event) throw new StatusHttp("An error ocurred", 400);
   return  event
 }
