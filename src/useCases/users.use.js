@@ -1,11 +1,12 @@
 import { StatusHttp } from "../libs/statusHttp.js";
+import { Company } from "../models/companies.models.js";
 import { User } from "../models/users.model.js";
 import bcrypt from "../libs/bcrypt.js";
 
 async function create(newUser) {
   const { email, password } = newUser;
-  const userFound = await User.findOne({ email });
-  if (userFound) throw new StatusHttp("Ya existe este email", 404);
+  const userFound = await User.findOne({ email }) || await Company.findOne({ email });
+  if (userFound) throw new StatusHttp("Ya existe un usuario con este email", 404);
   const encryptedPassword = await bcrypt.hash(password);
   return User.create({ ...newUser, password: encryptedPassword });
 }

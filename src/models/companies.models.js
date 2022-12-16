@@ -103,8 +103,8 @@ const companySchema = new mongoose.Schema({
   ],
   role: {
     type: String,
-    enum: ["User", "Company"],
-    default: "Company"
+    enum: ["user", "company"],
+    default: "company"
   }
 });
 

@@ -7,7 +7,7 @@ import {access} from '../middlewares/accessRole.js'
 
 const router = express.Router();
 
-router.get("/:id", auth, access("User", "Company"), async (request, response, next) => {
+router.get("/:id", auth, access("user", "company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const allPostRankings = await rankingUseCase.getByCompany(id);
@@ -22,7 +22,7 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
 
 
 //es necesario este endpoint?
-router.get("/me", auth, access("User"), async (request, response, next) => {
+router.get("/me", auth, access("user"), async (request, response, next) => {
   try {
     const { currentUser } = request;
     allRankings = await rankingUseCase.getByUser(currentUser);
@@ -37,7 +37,7 @@ router.get("/me", auth, access("User"), async (request, response, next) => {
   }
 });
 
-router.post("/:id", auth, access("User"),async (request, response, next) => {
+router.post("/:id", auth, access("user"),async (request, response, next) => {
   try {
     const { id } = request.params;
     const {body: newRankingData, currentUser} = request;
@@ -60,7 +60,7 @@ router.post("/:id", auth, access("User"),async (request, response, next) => {
   }
 });
 
-router.patch("/:id", auth, access("User"),async (request, response, next) => {
+router.patch("/:id", auth, access("user"),async (request, response, next) => {
   try {
     const {body: rankingUpdated, currentUser} = request;
     const { id } = request.params;
@@ -76,7 +76,7 @@ router.patch("/:id", auth, access("User"),async (request, response, next) => {
   }
 });
 
-router.delete("/:id", auth, access("User"),async (request, response, next) => {
+router.delete("/:id", auth, access("user"),async (request, response, next) => {
   try {
     const { id } = request.params;
     const { currentUser } = request;
