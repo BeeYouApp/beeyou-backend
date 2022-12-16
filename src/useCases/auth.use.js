@@ -5,15 +5,14 @@ import jwt from "../libs/jwt.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 
 async function login(email, password) {
-  const userFound = await User.findOne({ email }) || await Company.findOne({ email });
-  if(!userFound) throw new StatusHttp("Este usuario no se encuentra registrado", 400);
+  const userFound =
+    (await User.findOne({ email })) || (await Company.findOne({ email }));
+  if (!userFound)
+    throw new StatusHttp("Este usuario no se encuentra registrado", 400);
   const isValidPassword = await bcrypt.compare(password, userFound.password);
   if (!isValidPassword) throw new StatusHttp("Credenciales inválidas", 400);
-  const user = userFound._id
-  const type = userFound.role
-  const token = jwt.sign({ id: user,  role: type })
-  return {token: token , user: user , type: type};
+  const token = jwt.sign({ id: userFound._id, role: userFound.role });
+  return { token: token, user: userFound };
 }
 
 export { login };
-
