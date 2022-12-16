@@ -6,25 +6,18 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  date: {
-    type: Date,
-    required: true,
-    trim: true,
-  },
   topic: {
     type: String,
     required: true,
-    trim: true,
+    trim: true
   },
-  timeStart: {
+  dateStart: {
     type: Date,
-    required: true,
-    trim: true,
+    required: true
   },
-  timeEnd: {
+  dateEnd: {
     type: Date,
-    required: true,
-    trim: true,
+    required: true
   },
   haveCost: {
     type: Boolean,
@@ -33,12 +26,10 @@ const eventSchema = new mongoose.Schema({
   cost: {
     type: Number,
     required: true,
-    trim: true,
   },
   capacity: {
     type: Number,
-    required: true,
-    trim: true,
+    required: true
   },
   description: {
     type: String,
@@ -69,8 +60,6 @@ const eventSchema = new mongoose.Schema({
   ],
 });
 
-// Create model
-// ('events' (reference collection name), 'eventSchema (schema))
 const Event = mongoose.model("events", eventSchema);
 
 export { Event };
