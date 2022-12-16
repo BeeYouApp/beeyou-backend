@@ -24,22 +24,47 @@ async function deleteById(id, idCompany) {
   const companyFound = await Company.findById(id).populate("discounts ranking");
   if(!companyFound) throw new StatusHttp("Compañia no encontrada");
   if (companyFound._id == idCompany) {
-    return await Discounts.findByIdAndDelete(id);
+    return await Company.findByIdAndDelete(id);
   } else {
-    throw new StatusHttp("No puedes eliminar un descuento que no te pertenece");
+    throw new StatusHttp("No puedes eliminar un usuario que no te pertenece");
   }
 }
 
 //manejar errores
 async function updated(idCompany, updatedCompany, file) {
   const { password } = updatedCompany;
-  const { location, key} = file;
-  const companyToSave = { ...newData, image: location, keyImage: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);
-    return Company.findByIdAndUpdate(idCompany, {...companyToSave, password: encryptedPassword});
+    if(file){
+      const user = await Company.findById(idCompany);
+      if (user.image && user.keyImage) {
+      s3.deleteObject({
+        Key: user.keyImage,
+        Bucket: process.env.AWS_BUCKET_NAME
+      }).promise();
+    }
+      const { location, key } = file;
+      const companyToSave = { ...updatedCompany, avatar: location, keyAvatar: key };
+      return await Company.findByIdAndUpdate(idCompany, {...companyToSave, password: encryptedPassword,});
+    }else{
+      return await Company.findByIdAndUpdate(idCompany, {...updatedCompany, password: encryptedPassword,});
+    }
+  } else {
+    if(file){
+      const user = await Company.findById(idCompany);
+      if (user.avatar && user.keyAvatar) {
+      s3.deleteObject({
+        Key: user.keyAvatar,
+        Bucket: process.env.AWS_BUCKET_NAME
+      }).promise();
+    }
+      const { location, key } = file;
+      const companyToSave = { ...newData, avatar: location, keyAvatar: key };
+      return await Company.findByIdAndUpdate(idCompany, companyToSave);
+    }else{
+      return await Company.findByIdAndUpdate(idCompany, updatedCompany);
+    }
   }
-  return Company.findByIdAndUpdate(idCompany, companyToSave);
 }
 
 //manejar errores

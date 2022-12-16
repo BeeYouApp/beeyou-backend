@@ -3,8 +3,8 @@ import * as company from "../useCases/companies.use.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 import { auth } from "../middlewares/auth.js";
 import upload from "../middlewares/multer.js";
-import {access} from "../middlewares/accessRole.js"
-import * as authUseCases from '../useCases/auth.use.js';
+import { access } from "../middlewares/accessRole.js";
+import * as authUseCases from "../useCases/auth.use.js";
 
 const router = express.Router();
 
@@ -25,17 +25,18 @@ router.get("/:id", auth, access("user", "company"), async (request, response, ne
   try {
     const { id } = request.params;
 
-    const companyByID = await company.getById(id);
-    response.json({
-      success: true,
-      data: {
-        company: companyByID,
-      },
-    });
-  } catch (error) {
-    next(new StatusHttp(error.message, error.status, error.name));
+      const companyByID = await company.getById(id);
+      response.json({
+        success: true,
+        data: {
+          company: companyByID,
+        },
+      });
+    } catch (error) {
+      next(new StatusHttp(error.message, error.status, error.name));
+    }
   }
-});
+);
 
 router.post("/", async (request, response, next) => {
   try {

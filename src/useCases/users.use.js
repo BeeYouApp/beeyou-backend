@@ -11,28 +11,51 @@ async function create(newUser) {
   return User.create({ ...newUser, password: encryptedPassword });
 }
 
-// actualizar con validacion de imagen
 async function update(idUser, newData, file) {
   const { password } = newData;
-  let { location, key } = file;
-  const userToSave = { ...newData, avatar: location, keyAvatar: key };
   if (password) {
     const encryptedPassword = await bcrypt.hash(password);
-    return await User.findByIdAndUpdate(idUser, {
-      ...userToSave,
-      password: encryptedPassword,
-    });
+    if(file){
+      const user = await User.findById(idUser);
+      if (user.avatar && user.keyAvatar) {
+      s3.deleteObject({
+        Key: user.keyAvatar,
+        Bucket: process.env.AWS_BUCKET_NAME
+      }).promise();
+    }
+      const { location, key } = file;
+      const userToSave = { ...newData, avatar: location, keyAvatar: key };
+      return await User.findByIdAndUpdate(idUser, {...userToSave, password: encryptedPassword,});
+    }else{
+      return await User.findByIdAndUpdate(idUser, {...newData, password: encryptedPassword,});
+    }
   } else {
-    return await User.findByIdAndUpdate(idUser, userToSave);
+    if(file){
+      const user = await User.findById(idUser);
+      if (user.avatar && user.keyAvatar) {
+      s3.deleteObject({
+        Key: user.keyAvatar,
+        Bucket: process.env.AWS_BUCKET_NAME
+      }).promise();
+    }
+      const { location, key } = file;
+      const userToSave = { ...newData, avatar: location, keyAvatar: key };
+      return await User.findByIdAndUpdate(idUser, userToSave);
+    }else{
+      return await User.findByIdAndUpdate(idUser, newData);
+    }
   }
 }
 
-async function deleteById(idUser) {
+async function deleteById(id, idUser) {
   const userFound = await User.findById(idUser);
 
   if (!userFound) throw new StatusHttp("No existe este user", 404);
-
-  return await User.deleteOne({ _id: idUser });
+  if(userFound._id == idUser){
+    return await User.deleteOne({ _id: idUser });
+  }else{
+    throw new StatusHttp("No puedes eliminar un usuario que no te pertenece");
+  }
 }
 
 async function getById(idUser) {

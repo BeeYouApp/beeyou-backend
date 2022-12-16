@@ -105,7 +105,18 @@ const companySchema = new mongoose.Schema({
     type: String,
     enum: ["user", "company"],
     default: "company"
-  }
+  },
+  daysOfService: [{
+    type: String,
+    enum: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo", "Todos los días"],
+    default: ["Todos los días"]
+  }],
+  timeServiceStart: {
+    type: String
+  },
+  timeServiceEnd: {
+    type: String
+  } 
 });
 
 const Company = mongoose.model("companies", companySchema);
