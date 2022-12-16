@@ -9,7 +9,7 @@ import * as authUseCases from "../useCases/auth.use.js";
 const router = express.Router();
 
 // es necesario este endpoint?
-router.get("/", auth, access("user"),  async (request, response, next) => {
+router.get("/", auth, access("user"), async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -46,13 +46,13 @@ router.get("/:id", auth, access("user"), async (request, response, next) => {
 router.post("/", async (request, response, next) => {
   try {
     const { body: newUser } = request;
-    const data = await userUseCases.create(newUser);
-    const token = await authUseCases.login(newUser.email, newUser.password);
+    await userUseCases.create(newUser);
+    const auth = await authUseCases.login(newUser.email, newUser.password);
     response.json({
       success: true,
       message: "¡Usuario creado!",
-      user: data._id,
-      data: token,
+      user: auth.user,
+      token: auth.token,
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));
@@ -60,11 +60,16 @@ router.post("/", async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch("/:id", auth, access("user"), upload.single("avatar"), async (request, response, next) => {
-  try {
-    const { id } = request.params;
-    const { body, file } = request;
-    await userUseCases.update(id, body, file);
+router.patch(
+  "/:id",
+  auth,
+  access("user"),
+  upload.single("avatar"),
+  async (request, response, next) => {
+    try {
+      const { id } = request.params;
+      const { body, file } = request;
+      await userUseCases.update(id, body, file);
 
       response.json({
         success: true,
