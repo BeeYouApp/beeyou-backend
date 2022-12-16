@@ -8,7 +8,7 @@ import {access} from '../middlewares/accessRole.js'
 
 const router = express.Router();
 
-router.get("/", auth, access("User", "Company"), async (request, response, next) => {
+router.get("/", auth, access("user", "company"), async (request, response, next) => {
   try {
     let allDiscounts = await discount.getAll();
     response.json({
@@ -21,7 +21,7 @@ router.get("/", auth, access("User", "Company"), async (request, response, next)
     next(new StatusHttp(error.message, error.status, error.name));
   }
 });
-router.get("/:id", auth, access("User", "Company"), async (request, response, next) => {
+router.get("/:id", auth, access("user", "company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const discountByID = await discount.getById(id);
@@ -36,7 +36,7 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
   }
 });
 
-router.post("/", auth, access("Company"), upload.single("images"), async (request, response, next) => {
+router.post("/", auth, access("company"), upload.single("images"), async (request, response, next) => {
     try {
       const { body: newDiscount, currentUser } = request;
       const newDiscountData = await discount.create(newDiscount, currentUser);
@@ -56,7 +56,7 @@ router.post("/", auth, access("Company"), upload.single("images"), async (reques
   }
 );
 
-router.patch("/:id", auth, access("Company"), async (request, response, next) => {
+router.patch("/:id", auth, access("company"), async (request, response, next) => {
   try {
     const { body: discountUpdated, currentUser } = request;
     const { id } = request.params;
@@ -75,7 +75,7 @@ router.patch("/:id", auth, access("Company"), async (request, response, next) =>
   }
 });
 
-router.delete("/:id", auth, access("Company"),  async (request, response, next) => {
+router.delete("/:id", auth, access("company"),  async (request, response, next) => {
   try {
     const { id } = request.params;
     const { currentUser } = request;

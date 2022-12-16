@@ -9,7 +9,7 @@ import * as authUseCases from "../useCases/auth.use.js";
 const router = express.Router();
 
 // es necesario este endpoint?
-router.get("/", auth, access("User"), async (request, response, next) => {
+router.get("/", auth, access("user"),  async (request, response, next) => {
   try {
     console.log("hola");
     let allUsers;
@@ -29,7 +29,7 @@ router.get("/", auth, access("User"), async (request, response, next) => {
   }
 });
 
-router.get("/:id", auth, access("User"), async (request, response, next) => {
+router.get("/:id", auth, access("user"), async (request, response, next) => {
   try {
     const { id } = request.params;
     let user = await userUseCases.getById(id);
@@ -48,12 +48,11 @@ router.post("/", async (request, response, next) => {
     const { body: newUser } = request;
     const data = await userUseCases.create(newUser);
     const token = await authUseCases.login(newUser.email, newUser.password);
-    console.log(data);
     response.json({
       success: true,
       message: "¡Usuario creado!",
       user: data._id,
-      token: token,
+      data: token,
     });
   } catch (error) {
     next(new StatusHttp(error.message, error.status, error.name));
@@ -61,16 +60,11 @@ router.post("/", async (request, response, next) => {
 });
 
 // PATCH/users/:id
-router.patch(
-  "/:id",
-  auth,
-  access("User"),
-  upload.single("avatar"),
-  async (request, response, next) => {
-    try {
-      const { id } = request.params;
-      const { body } = request;
-      await userUseCases.update(id, body);
+router.patch("/:id", auth, access("user"), upload.single("avatar"), async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const { body, file } = request;
+    await userUseCases.update(id, body, file);
 
       response.json({
         success: true,
@@ -83,10 +77,11 @@ router.patch(
 );
 
 // DELETE/users/:id
-router.delete("/:id", auth, access("User"), async (request, response, next) => {
+router.delete("/:id", auth, access("user"), async (request, response, next) => {
   try {
     const { id } = request.params;
-    await userUseCases.deleteById(id);
+    const { currentUser } = request;
+    await userUseCases.deleteById(id, currentUser);
 
     response.json({
       success: true,

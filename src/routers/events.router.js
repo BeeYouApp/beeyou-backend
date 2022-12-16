@@ -9,7 +9,7 @@ import {access} from '../middlewares/accessRole.js'
 const router = express.Router();
 
 //actualizar para las referencias a la compañia
-router.post("/", auth, access("Company"),  upload.single("images"), async (request, response, next) => {
+router.post("/", auth, access("company"),  upload.single("images"), async (request, response, next) => {
     try {
       const { body: newEvent, currentUser } = request;
       const newEventData = await eventsUsesCases.create(newEvent, currentUser);
@@ -27,7 +27,7 @@ router.post("/", auth, access("Company"),  upload.single("images"), async (reque
   }
 );
 
-router.get("/", auth, access("User", "Company"), async (request, response, next) => {
+router.get("/", auth, access("user", "company"), async (request, response, next) => {
   try {
     let allEvents;
     const page = request.query.page;
@@ -48,7 +48,7 @@ router.get("/", auth, access("User", "Company"), async (request, response, next)
   }
 });
 
-router.get("/:id", auth, access("User", "Company"), async (request, response, next) => {
+router.get("/:id", auth, access("user", "company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     let event = await eventsUsesCases.getById(id);
@@ -63,7 +63,7 @@ router.get("/:id", auth, access("User", "Company"), async (request, response, ne
   }
 });
 
-router.patch("/:id", auth, access("Company"), async (request, response, next) => {
+router.patch("/:id", auth, access("company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { body, currentUser } = request;
@@ -78,7 +78,7 @@ router.patch("/:id", auth, access("Company"), async (request, response, next) =>
   }
 });
 
-router.delete("/:id", auth, access("Company"), async (request, response, next) => {
+router.delete("/:id", auth, access("company"), async (request, response, next) => {
   try {
     const { id } = request.params;
     const { currentUser } = request;

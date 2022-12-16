@@ -1,11 +1,12 @@
 import { Company } from "../models/companies.models.js";
+import { User } from "../models/users.model.js";
 import bcrypt from "../libs/bcrypt.js";
 import { StatusHttp } from "../libs/statusHttp.js";
 
 async function create(newCompany) {
   const { email, password } = newCompany;
-  const companyFound = await Company.findOne({ email });
-  if (companyFound) throw new StatusHttp("Ya existe un Writer con este email");
+  const companyFound = await Company.findOne({ email }) ||  await User.findOne({ email });
+  if (companyFound) throw new StatusHttp("Ya existe un usuario con este email");
   const encryptedPassword = await bcrypt.hash(password);
   return Company.create({ ...newCompany, password: encryptedPassword });
 }
@@ -23,15 +24,12 @@ async function deleteById(id, idCompany) {
   const companyFound = await Company.findById(id).populate("discounts ranking");
   if(!companyFound) throw new StatusHttp("Compañia no encontrada");
   if (companyFound._id == idCompany) {
-    return await Discounts.findByIdAndDelete(id);
+    return await Company.findByIdAndDelete(id);
   } else {
-    throw new StatusHttp("No puedes eliminar un descuento que no te pertenece");
+    throw new StatusHttp("No puedes eliminar un usuario que no te pertenece");
   }
 }
 
-async function update(idUser, newData, file) {
-  
-}
 //manejar errores
 async function updated(idCompany, updatedCompany, file) {
   const { password } = updatedCompany;

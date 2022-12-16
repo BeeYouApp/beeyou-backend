@@ -9,7 +9,9 @@ router.post('/', async (request, response, next) => {
         const token = await authUseCases.login(email, password);
         response.json({
             success: true,
-            token: token
+            token: token.token,
+            id: token.user,
+            type: token.type
         });
     } catch (error) {
         response.status(400);
