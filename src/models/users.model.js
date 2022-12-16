@@ -24,8 +24,7 @@ const userSchema = new mongoose.Schema({
     maxLenght: 35,
   },
   birthDate: {
-    type: Date,
-    trim: true,
+    type: Date
   },
   gender: {
     type: String,
