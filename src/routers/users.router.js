@@ -69,11 +69,12 @@ router.patch(
     try {
       const { id } = request.params;
       const { body, file } = request;
-      await userUseCases.update(id, body, file);
+      const user = await userUseCases.update(id, body, file);
 
       response.json({
         success: true,
         message: "¡User actualizado!",
+        user: user,
       });
     } catch (error) {
       next(new StatusHttp(error.message, error.status, error.name));
