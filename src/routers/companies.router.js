@@ -89,7 +89,8 @@ router.patch(
     try {
       const { body: companyUpdated, file } = request;
       const { id } = request.params;
-      const company = await company.updated(id, companyUpdated, file);
+      await company.updated(id, companyUpdated, file);
+      const company = await company.getById(id);
       response.json({
         success: true,
         message: "company Updated!",
