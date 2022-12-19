@@ -6,25 +6,7 @@ const discountSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  mealsDiscounts: {
-    type: Number,
-  },
-  beveragesDiscounts: {
-    type: Number,
-  },
-  mealsDiscountsPorcentage: {
-    type: Number,
-  },
-  beveragesDiscountsPorcentage: {
-    type: Number,
-  },
-  twoOnePromos: {
-    type: String,
-  },
-  threeTwoPromo: {
-    type: String,
-  },
-  customDiscounts: {
+  description: {
     type: String,
   },
   initialDate: {
