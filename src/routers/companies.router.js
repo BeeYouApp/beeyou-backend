@@ -90,11 +90,11 @@ router.patch(
       const { body: companyUpdated, file } = request;
       const { id } = request.params;
       await company.updated(id, companyUpdated, file);
-      const company = await company.getById(id);
+      const companyData = await company.getById(id);
       response.json({
         success: true,
         message: "company Updated!",
-        user: company,
+        user: companyData,
       });
     } catch (error) {
       next(new StatusHttp(error.message, error.status, error.name));
