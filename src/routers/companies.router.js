@@ -46,7 +46,7 @@ router.post("/", async (request, response, next) => {
   try {
     const { body: newCompanyData } = request;
     await company.create(newCompanyData);
-    const auth = await authUseCases.login(
+    const auth = await authUseCases.register(
       newCompanyData.email,
       newCompanyData.password
     );
