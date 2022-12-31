@@ -11,6 +11,11 @@ const AddressSchema = new mongoose.Schema({
 });
 
 const companySchema = new mongoose.Schema({
+  isVerified:{
+    type: Boolean,
+    default: false,
+    required: true
+  },
   email: {
     type: String,
     required: true,
