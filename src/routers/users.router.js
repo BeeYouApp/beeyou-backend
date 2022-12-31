@@ -47,7 +47,7 @@ router.post("/", async (request, response, next) => {
   try {
     const { body: newUser } = request;
     await userUseCases.create(newUser);
-    const auth = await authUseCases.login(newUser.email, newUser.password);
+    const auth = await authUseCases.register(newUser.email, newUser.password);
     response.json({
       success: true,
       message: "¡Usuario creado!",
