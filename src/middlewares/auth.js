@@ -9,11 +9,8 @@ function auth(request, response, next) {
     request.currentUser = tokenDecoded.id;
     request.roleCurrent = tokenDecoded.role;
     const isCompany = tokenDecoded.role;
-    if (isCompany === "company") {
-      const verify = tokenDecoded.isVerified;
-      if (verify === false) throw new Error("Usuario no verificado");
-      return (request.isVerified = tokenDecoded.isVerified);
-    } else {
+    if (isCompany === "company") request.isVerified = tokenDecoded.isVerified;
+    else {
       request.currentUser = tokenDecoded.id;
       request.roleCurrent = tokenDecoded.role;
     }
